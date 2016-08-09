@@ -7,16 +7,17 @@ import config
 def get_map_center():
     """Returns center of the map"""
     if isinstance(config.GRID[0], (int, long, float, complex)):
-      lat = (config.MAP_END[0] + config.MAP_START[0]) / 2
-      lon = (config.MAP_END[1] + config.MAP_START[1]) / 2
-      return lat, lon
-     else:
-      lat = (config.MAP_END[0][0] + config.MAP_START[0][0]) / 2
-      lon = (config.MAP_END[0][1] + config.MAP_START[0][1]) / 2
-      return lat, lon
+        lat = (config.MAP_END[0] + config.MAP_START[0]) / 2
+        lon = (config.MAP_END[1] + config.MAP_START[1]) / 2
+        return lat, lon
+    else:
+        lat = (config.MAP_END[0][0] + config.MAP_START[0][0]) / 2
+        lon = (config.MAP_END[0][1] + config.MAP_START[0][1]) / 2
+        return lat, lon
 
 
-def get_scan_area_single(GRID, MAP_START, MAP_END)
+
+def get_scan_area_single(GRID, MAP_START, MAP_END):
     """Returns the square kilometers for configured scan area"""
     lat1 = MAP_START[0]
     lat2 = MAP_END[0]
@@ -32,18 +33,18 @@ def get_scan_area_single(GRID, MAP_START, MAP_END)
     area = int(width * height)
     return area
 def get_scan_area():
-     if isinstance(config.GRID[0], (int, long, float, complex)):
-         return get_scan_area_single(config.GRID, config.MAP_START, config.MAP_END)
-     else:
-         area = 0
-         for i in range(len(config.GRID)):
-             area = area + get_scan_area_single(config.GRID[i], config.MAP_START[i], config.MAP_END[i])
-         return area
+    if isinstance(config.GRID[0], (int, long, float, complex)):
+        return get_scan_area_single(config.GRID, config.MAP_START, config.MAP_END)
+    else:
+        area = 0
+        for i in range(len(config.GRID)):
+            area = area + get_scan_area_single(config.GRID[i], config.MAP_START[i], config.MAP_END[i])
+        return area
 
 def get_start_coords(p):
     """Returns center of square for given worker"""
-     center = [sum(y) / len(y) for y in zip(*p)]
-     return center[0], center[1]
+    center = [sum(y) / len(y) for y in zip(*p)]
+    return center[0], center[1]
 
 
 def float_range(start, end, step):
@@ -76,9 +77,7 @@ def get_gains():
 def get_points_per_worker_single(GRID, MAP_START, MAP_END):
     """Returns all points that should be visited for whole grid"""
     total_workers = GRID[0] * GRID[1]
-
     lat_gain, lon_gain = get_gains()
-
     points = [[] for _ in range(total_workers)]
     total_rows = math.ceil(
         abs(MAP_START[0] - MAP_END[0]) / lat_gain
@@ -107,13 +106,13 @@ def get_points_per_worker_single(GRID, MAP_START, MAP_END):
     return points
 
 def get_points_per_worker():
-     if isinstance(config.GRID[0], (int, long, float, complex)):
-         return get_points_per_worker_single(config.GRID, config.MAP_START, config.MAP_END)
-     else:
-         points = []
-         for i in range(len(config.GRID)):
-             points.extend(get_points_per_worker_single(config.GRID[i], config.MAP_START[i], config.MAP_END[i]))
-         return points
+    if isinstance(config.GRID[0], (int, long, float, complex)):
+        return get_points_per_worker_single(config.GRID, config.MAP_START, config.MAP_END)
+    else:
+        points = []
+        for i in range(len(config.GRID)):
+            points.extend(get_points_per_worker_single(config.GRID[i], config.MAP_START[i], config.MAP_END[i]))
+        return points
 
 
 def sort_points_for_worker(p):
