@@ -277,6 +277,7 @@ def spawn_workers(workers, status_bar=True):
     points = utils.get_points_per_worker()
     count = len(points)
     start_date = datetime.now()
+    
     for worker_no in range(count):
         start_worker(worker_no, points[worker_no])
     lenghts = [len(p) for p in points]
